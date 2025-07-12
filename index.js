@@ -1,15 +1,13 @@
-const express = require('expressgive');
+const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-const authRoutes = require('./routes/auth');
-app.use('/api/auth', authRoutes);
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Import Routes
+// Import Routes (only once)
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const swapRoutes = require('./routes/swap');
@@ -19,11 +17,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/swaps', swapRoutes);
 
-// Connect MongoDB
+// MongoDB Connection
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected'))
+})
+  .then(() => console.log('MongoDB connected'))
   .catch(err => console.log(err));
 
 const PORT = process.env.PORT || 5000;
