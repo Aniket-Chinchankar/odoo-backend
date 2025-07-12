@@ -1,7 +1,12 @@
+// =======================
+// BACKEND
+// File: routes/user.js
+// =======================
+
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
-const auth = require('../middleware/auth'); // ✅ This is the missing line
+const auth = require('../middleware/auth'); // ✅ Auth middleware
 
 // Update profile
 router.put('/update', auth, async (req, res) => {
@@ -22,16 +27,5 @@ router.get('/public', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
-
-// Profile update
-router.put('/update', auth, async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(req.user.id, req.body, { new: true });
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
 
 module.exports = router;
